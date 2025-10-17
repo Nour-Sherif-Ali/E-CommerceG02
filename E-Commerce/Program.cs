@@ -33,6 +33,7 @@ namespace E_Commerce
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
             builder.Services.AddScoped<IServiceManager, ServiceManager>();
+            builder.Services.AddTransient<PictureUrlResolver>();
             #endregion
             //------------------------------------------------------------------------------------
             builder.Services.AddEndpointsApiExplorer();

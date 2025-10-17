@@ -14,6 +14,13 @@ namespace Domain.Contracts
 
         //Get By ID
         Task<TEntity?> GetByIdAsync(TKey id);
+
+        #region WithSpecifications
+        Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, TKey> specifications);
+        Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, TKey> specifications);
+        #endregion
+
+
         Task AddAsync(TEntity entity);
         //Update
         void Update(TEntity entity);

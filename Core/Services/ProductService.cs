@@ -7,7 +7,10 @@ using AutoMapper;
 using Domain.Contracts;
 using Domain.Entities;
 using Services.Abstractions;
+using Services.Specifications;
+using Shared;
 using Shared.DTOS;
+using Shared.Enums;
 
 namespace Services
 {
@@ -21,10 +24,15 @@ namespace Services
             return BrandsDto;
         }
 
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
-           var Products = await _unitOfWork.GetReposityory<Product, int>().GetAllAsync();
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products);
+           //var Products = await _unitOfWork.GetReposityory<Product, int>().GetAllAsync();
+           // return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products);
+           var Specifications = new ProductWithBrandAndTypeSpecifications(queryParams);
+            var Repo = _unitOfWork.GetReposityory<Product, int>();
+            var Products = await Repo.GetAllAsync(Specifications); //Product
+            var ProductsData = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products);
+            return ProductsData;
         }
 
         public async Task<IEnumerable<TypeDto>> GetAllTypesAsync()
@@ -33,9 +41,10 @@ namespace Services
             return _mapper.Map<IEnumerable<ProductType>,IEnumerable < TypeDto >> (Types);
         }
 
-        public async Task<ProductDto?> GetProductByIdAsync(int id)
+        public async Task<ProductDto?> GetProductByIdAsync(int Id)
         {
-            var Product = await _unitOfWork.GetReposityory<Product,int>().GetByIdAsync(id);
+            var Specifications = new ProductWithBrandAndTypeSpecifications(Id);
+            var Product = await _unitOfWork.GetReposityory<Product,int>().GetByIdAsync(Specifications);
             return _mapper.Map<Product, ProductDto>(Product);
 
         }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
+using Shared;
 using Shared.DTOS;
 namespace Presentation.Controllers
 {
@@ -16,16 +17,16 @@ namespace Presentation.Controllers
     {
         #region Get All Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParams queryParams)
         {
-            var Products = await _serviceManager.ProductService.GetAllProductsAsync();
+            var Products = await _serviceManager.ProductService.GetAllProductsAsync(queryParams);
             return Ok(Products);
         }
 
         #endregion
 
         #region Get Product By Id
-        [HttpGet("{Id}")]
+        [HttpGet("{Id:int}")]
         public async Task<ActionResult<ProductDto>> GetProduct(int Id)
         {
             var Product = await _serviceManager.ProductService.GetProductByIdAsync(Id);
