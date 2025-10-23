@@ -7,6 +7,7 @@ using Persistance.Repositories;
 using AutoMapper;
 using Services;
 using Services.Abstractions;
+using E_Commerce.CustomMiddleWares;
 
 namespace E_Commerce
 {
@@ -36,6 +37,7 @@ namespace E_Commerce
             builder.Services.AddTransient<PictureUrlResolver>();
             #endregion
             //------------------------------------------------------------------------------------
+            
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -46,6 +48,7 @@ namespace E_Commerce
             var ObjectOfDataSeeding = Scope.ServiceProvider.GetRequiredService<IDataSeeding>(); 
             await ObjectOfDataSeeding.DataSeedAsync();
             #endregion
+            app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
 
 
             // Configure the HTTP request pipeline.

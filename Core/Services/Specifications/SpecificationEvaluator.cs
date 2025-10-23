@@ -40,6 +40,12 @@ namespace Services.Specifications
                     (current, include) => current.Include(include));
             }
 
+            // Apply Pagination
+            if(specifications.IsPaginated)
+            {
+                query = query.Skip(specifications.Skip).Take(specifications.Take);
+            }
+
             return query;
         }
 
