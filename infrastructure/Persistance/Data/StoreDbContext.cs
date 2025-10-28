@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Entities;
+using Domain.Entities.ProductModule;
 using Microsoft.EntityFrameworkCore;
 
 namespace Persistance.Data

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Contracts;
-using Domain.Entities;
+using Domain.Entities.ProductModule;
 
 namespace Services.Specifications
 {

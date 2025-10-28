@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Contracts;
-using Domain.Entities;
+using Domain.Entities.ProductModule;
 using Persistance.Data;
 
 namespace Persistance.Repositories

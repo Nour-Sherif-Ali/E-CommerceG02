@@ -8,6 +8,11 @@ using AutoMapper;
 using Services;
 using Services.Abstractions;
 using E_Commerce.CustomMiddleWares;
+using Microsoft.AspNetCore.Mvc;
+using Shared.ErrorModels;
+using E_Commerce.Factories;
+using E_Commerce.Extensions;
+using StackExchange.Redis;
 
 namespace E_Commerce
 {
@@ -19,38 +24,32 @@ namespace E_Commerce
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+          
 
             //----------------------------------------------------------------------------------------
             #region Configure Services
-            builder.Services.AddDbContext<StoreDbContext>(options =>
-
-            {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
+            builder. Services.AddInfrastructureService(builder.Configuration);
+            builder.Services.AddCoreServices();
+            builder.Services.AddPresentationServices();
             builder.Services.AddTransient<PictureUrlResolver>();
+            builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+            builder.Services.AddSingleton<IConnectionMultiplexer>((_) =>
+            {
+                return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection"));
+            });
             #endregion
             //------------------------------------------------------------------------------------
             
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-           
+            #region Build
             var app = builder.Build();
-            #region Services
-            var Scope = app.Services.CreateScope();
-            var ObjectOfDataSeeding = Scope.ServiceProvider.GetRequiredService<IDataSeeding>(); 
-            await ObjectOfDataSeeding.DataSeedAsync();
             #endregion
-            app.UseMiddleware<CustomExceptionHandlerMiddleWare>();
 
-
+            #region Middlewares
+            app.UseCustomMiddleWareExceptions();
+            await app.SeedDbAsync();
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -67,6 +66,12 @@ namespace E_Commerce
             app.MapControllers();
 
             app.Run();
+            #endregion
+
+
+
+
+
         }
     }
 }

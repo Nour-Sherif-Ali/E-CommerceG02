@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 using Shared;
 using Shared.DTOS;
+using Shared.ErrorModels;
 namespace Presentation.Controllers
 {
 
@@ -26,6 +28,12 @@ namespace Presentation.Controllers
         #endregion
 
         #region Get Product By Id
+        [ProducesResponseType(typeof(ErrorToReturn),(int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ErrorToReturn), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ValidationErrorToReturn ), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ProductDto), (int)HttpStatusCode.OK)]
+
+
         [HttpGet("{Id:int}")]
         public async Task<ActionResult<ProductDto>> GetProduct(int Id)
         {

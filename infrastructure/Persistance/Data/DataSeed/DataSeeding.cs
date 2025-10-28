@@ -1,5 +1,4 @@
 ﻿using Domain.Contracts;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
 
@@ -10,9 +9,9 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Domain.Contracts;
-using Domain.Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entities.ProductModule;
 
 namespace Persistance.Data.DataSeed
 {
