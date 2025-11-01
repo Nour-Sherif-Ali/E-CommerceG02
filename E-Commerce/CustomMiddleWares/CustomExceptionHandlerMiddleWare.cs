@@ -31,10 +31,18 @@ namespace E_Commerce.CustomMiddleWares
 
         private static async Task HandleExceptionAsync(HttpContext httpContext, Exception ex)
         {
+            var Response = new ErrorToReturn()
+            {
+                
+                ErrorMessage = ex.Message,
+            };
             httpContext.Response.StatusCode = ex switch
             {
                 NotFoundException => StatusCodes.Status404NotFound,
+                UnauthorizedException => StatusCodes.Status401Unauthorized,
+                BadRequestException badRequestException => GetBadREquestErrors(badRequestException, Response),
                 _ => StatusCodes.Status500InternalServerError
+
 
             };// keda ba2olo deh moshkelet backend 
 
@@ -42,18 +50,14 @@ namespace E_Commerce.CustomMiddleWares
             //Set Content Type For Response
             httpContext.Response.ContentType = "application/json";
 
-            //Response Object
-            var Response = new ErrorToReturn()
-            {
-                StatusCode = httpContext.Response.StatusCode,
-                ErrorMessage = ex.Message
-            };
-            // var ResponseToReturn = JsonSerializer.Serialize(Response);
-            //await httpContext.Response.WriteAsync(ResponseToReturn);
-
-
             //Return Object As Json
             await httpContext.Response.WriteAsJsonAsync(Response); // Sugar Syntax
+        }
+
+        private static int GetBadREquestErrors(BadRequestException badRequestException, ErrorToReturn response)
+        {
+            response.Errors = badRequestException.Errors;
+            return StatusCodes.Status400BadRequest;
         }
 
         private static async Task HandleNotFoundEndPoint(HttpContext httpContext)

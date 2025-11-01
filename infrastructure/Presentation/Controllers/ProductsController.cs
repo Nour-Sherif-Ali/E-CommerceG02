@@ -13,9 +13,9 @@ using Shared.ErrorModels;
 namespace Presentation.Controllers
 {
 
-    [ApiController]
-    [Route("api/[controller]")]  // BaseUrl / api / ProductsController
-    public class ProductsController(IServiceManager _serviceManager ) : ControllerBase
+
+    
+    public class ProductsController(IServiceManager _serviceManager ) : APIBaseController
     {
         #region Get All Products
         [HttpGet]

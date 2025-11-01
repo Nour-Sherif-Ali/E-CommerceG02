@@ -12,6 +12,7 @@ namespace E_Commerce.Extensions
             var Scope = app.Services.CreateScope();
             var ObjectOfDataSeeding = Scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             await ObjectOfDataSeeding.DataSeedAsync();
+            await ObjectOfDataSeeding.IdentityDataSeed();
             return app;
             #endregion
         }

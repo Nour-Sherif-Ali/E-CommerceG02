@@ -46,7 +46,7 @@ namespace E_Commerce
             #region Build
             var app = builder.Build();
             #endregion
-
+          await  app.SeedDbAsync();
             #region Middlewares
             app.UseCustomMiddleWareExceptions();
             await app.SeedDbAsync();
