@@ -13,7 +13,6 @@ using Shared.ErrorModels;
 using E_Commerce.Factories;
 using E_Commerce.Extensions;
 using StackExchange.Redis;
-using Microsoft.Extensions.Options;
 
 namespace E_Commerce
 {
@@ -38,8 +37,6 @@ namespace E_Commerce
             {
                 return ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnection"));
             });
-
-            builder.Services.AddJWTService(builder.Configuration);
             #endregion
             //------------------------------------------------------------------------------------
             
@@ -62,8 +59,7 @@ namespace E_Commerce
 
             app.UseHttpsRedirection();
             app.UseStaticFiles(); //3lashan ne3raf nesha8al el images
-            app.UseAuthentication();
-            app.UseRouting();
+
             app.UseAuthorization();
 
 

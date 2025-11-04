@@ -5,7 +5,6 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Abstractions;
 using Shared;
@@ -19,7 +18,6 @@ namespace Presentation.Controllers
     public class ProductsController(IServiceManager _serviceManager ) : APIBaseController
     {
         #region Get All Products
-        [Authorize]  
         [HttpGet]
         public async Task<ActionResult<PaginatedResult<ProductDto>>> GetAllProducts([FromQuery] ProductQueryParams queryParams)
         {

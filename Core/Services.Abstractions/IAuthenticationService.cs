@@ -11,10 +11,5 @@ namespace Services.Abstractions
     {
         Task<UserDto> LoginAsync(LoginDto loginDto);
         Task<UserDto> Registerasync (RegisterDto registerDto);
-        Task<bool> CheckEmailAsync(string Email);
-        Task<AddressDto> GetCurrentUserAddress(string Email);
-        Task<AddressDto> UpdateCurrentUserAddress(AddressDto addressDto, string Email);
-        Task<UserDto> GetCurrentUser(string Email); 
-        
     }
 }

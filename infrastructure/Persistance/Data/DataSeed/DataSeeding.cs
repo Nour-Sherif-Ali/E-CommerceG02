@@ -14,7 +14,6 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Entities.ProductModule;
 using Microsoft.AspNetCore.Identity;
 using Domain.Entities.IdentityModule;
-using Domain.Entities.OrderModule;
 
 namespace Persistance.Data.DataSeed
 {
@@ -64,19 +63,7 @@ namespace Persistance.Data.DataSeed
                 }
             }
             #endregion
-            #region Delivery
-            if (!_dbContext.DeliveryMethods.Any())
-            {
-                var DeliveryData = File.OpenRead(@"..\Infrastructure\Persistance\Data\DataSeed\delivery.json");
-                var Methods = await JsonSerializer.DeserializeAsync<List<DeliveryMethod>>(DeliveryData);
-                if (Methods is not null && Methods.Any())
-                {
-                    await _dbContext.DeliveryMethods.AddRangeAsync(Methods); //local
-
-                }
-            }
-            #endregion
-            await _dbContext.SaveChangesAsync();
+           await  _dbContext.SaveChangesAsync();
             #endregion
         }
 
