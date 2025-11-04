@@ -5,9 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Entities.BasketModule;
+using Domain.Entities.IdentityModule;
+using Domain.Entities.OrderModule;
 using Domain.Entities.ProductModule;
 using Shared.DTOS;
 using Shared.DTOS.BasketDtos;
+using Shared.DTOS.IdentityDto;
+using Shared.DTOS.OrderDtos;
 
 namespace Services
 {
@@ -29,6 +33,13 @@ namespace Services
             #region BasketItem
             CreateMap<CustomerBasket,BasketDto>().ReverseMap();
             CreateMap<BasketItem,BasketItemDto>().ReverseMap();
+            #endregion
+            #region Identity
+            CreateMap<Address,AddressDto>().ReverseMap();
+            #endregion
+
+            #region Order
+            CreateMap<ShippingAddressDto, ShippingAddress>();
             #endregion
         }
         
