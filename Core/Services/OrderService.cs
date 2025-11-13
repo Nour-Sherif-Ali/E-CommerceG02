@@ -10,6 +10,7 @@ using Domain.Entities.ProductModule;
 using Domain.Exceptions;
 using Microsoft.Identity.Client;
 using Services.Abstractions;
+using Services.Specifications;
 using Shared.DTOS.OrderDtos;
 
 namespace Services
@@ -58,6 +59,26 @@ namespace Services
             await _unitOfWork.SaveChangesAsync();
 
             return _mapper.Map<Order, OrderToReturnDto>(Order);
+        }
+
+        public async Task<IEnumerable<DeliveryMethodDto>> GetAllDeliveryMethods()
+        {
+            var DeliveryMethods = await _unitOfWork.GetReposityory<DeliveryMethod, int>().GetAllAsync();
+            return _mapper.Map<IEnumerable<DeliveryMethod>, IEnumerable<DeliveryMethodDto>>(DeliveryMethods);
+        }
+
+        public async Task<IEnumerable<OrderToReturnDto>> GetAllOrdersAsync(string Email)
+        {
+            var Spec = new OrderSpecifications(Email);
+           var Orders = await  _unitOfWork.GetReposityory<Order,Guid>().GetAllAsync(Spec);
+           return _mapper.Map<IEnumerable<Order>, IEnumerable<OrderToReturnDto>>(Orders);
+        }
+
+        public async Task<OrderToReturnDto> GetOrderByIdAsync(Guid Id)
+        {
+            var spec = new OrderSpecifications(Id);
+            var Order = await _unitOfWork.GetReposityory<Order,Guid>().GetByIdAsync(spec);
+            return _mapper.Map<OrderToReturnDto>(Order);
         }
     }
 }

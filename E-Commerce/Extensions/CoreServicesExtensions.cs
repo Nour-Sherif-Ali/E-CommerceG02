@@ -10,7 +10,25 @@ namespace E_Commerce.Extensions
         public static IServiceCollection AddCoreServices(this IServiceCollection Services)
         {
             Services.AddAutoMapper(X => X.AddProfile(new MappingProfiles()));
-            Services.AddScoped<IServiceManager, ServiceManager>();
+            Services.AddTransient<OrderItemPictureUrlResolver>();
+            Services.AddScoped<IServiceManager, ServiceManagerWithFactoryDelegate>();
+
+            Services.AddScoped<IProductService, ProductService>();
+            Services.AddScoped<Func<IProductService>>(provider =>
+            () => provider.GetRequiredService<IProductService>());
+
+            Services.AddScoped<IOrderService, OrderService>();
+            Services.AddScoped<Func<IOrderService>>(provider =>
+            () => provider.GetRequiredService<IOrderService>());
+
+            Services.AddScoped<IBasketService, BasketService>();
+            Services.AddScoped<Func<IBasketService>>(provider =>
+            () => provider.GetRequiredService<IBasketService>());
+
+            Services.AddScoped<IAuthenticationService, AuthenticationService>();
+            Services.AddScoped<Func<IAuthenticationService>>(provider =>
+            () => provider.GetRequiredService<IAuthenticationService>());
+
             return Services;
         }
         public static IServiceCollection AddJWTService(this IServiceCollection services, IConfiguration configuration)
